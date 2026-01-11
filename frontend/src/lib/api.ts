@@ -22,7 +22,7 @@ api.interceptors.request.use((config) => {
 // Auth APIs
 export const authAPI = {
   // User (Creator) auth
-  userSignup: (data: { email: string; password: string; name: string }) =>
+  userSignup: (data: { email: string; password: string; name: string; creatorId?: string; role?: string }) =>
     api.post("/api/v1/user/signup", data),
 
   userSignin: (data: { email: string; password: string }) =>
