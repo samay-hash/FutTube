@@ -15,9 +15,13 @@ const googleAuthRoutes = require("./routes/googleAuth");
 
 const app = express();
 
+// Clean up the frontend URL (remove trailing slash if present)
+const frontend = (process.env.FRONTEND_URL || "http://localhost:3000").replace(/\/$/, "");
+console.log("CORS Origin Allowed:", frontend);
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL ?? "http://localhost:3000",
+    origin: [frontend, "http://localhost:3000"], // Allow both production and local
     credentials: true,
   })
 );
