@@ -4,23 +4,34 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/user");
 
 router.post("/signup", async (req, res) => {
-  const { email, password, name, creatorId, role } = req.body;
-  const hashed = await bcrypt.hash(password, 7);
-  const newUser = await userModel.create({
-    email,
-    password: hashed,
-    name,
-    creatorId: creatorId || null,
-    role: role || "creator",
-  });
-  res.json({
-    message: "User Created",
-    user: {
-      _id: newUser._id,
-      email: newUser.email,
-      role: newUser.role,
-    },
-  });
+  try {
+    const { email, password, name, creatorId, role } = req.body;
+
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const hashed = await bcrypt.hash(password, 7);
+    const newUser = await userModel.create({
+      email,
+      password: hashed,
+      name,
+      creatorId: creatorId || null,
+      role: role || "creator",
+    });
+    res.json({
+      message: "User Created",
+      user: {
+        _id: newUser._id,
+        email: newUser.email,
+        role: newUser.role,
+      },
+    });
+  } catch (err) {
+    console.error("Signup Error:", err);
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
 });
 
 router.post("/signin", async (req, res) => {
