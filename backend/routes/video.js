@@ -1,5 +1,5 @@
 const router = require("express").Router();
-
+const path = require("path");
 const { google } = require("googleapis");
 const { getOAuth2Client } = require("../tools/googleClient");
 
@@ -10,7 +10,19 @@ const adminAuth = require("../middlewares/adminMiddleware");
 const userAuth = require("../middlewares/userMiddleware");
 const uploadToYoutube = require("../services/youtubeUploader");
 
-const upload = multer({ dest: "uploads/" });
+// Configure Multer to preserve file extensions
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    // Use path.extname to get safe extension (e.g. .mp4)
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage: storage });
 
 router.post("/upload", upload.single("video"), async (req, res) => {
   console.log("BODY ===>", req.body);
@@ -31,7 +43,7 @@ router.post("/upload", upload.single("video"), async (req, res) => {
 });
 
 router.get("/pending", userAuth, async (req, res) => {
-  let filter = { status: "pending"};
+  let filter = { status: "pending" };
   if (req.role === "creator") {
     filter.creatorId = req.userId;
   } else if (req.role === "editor") {
