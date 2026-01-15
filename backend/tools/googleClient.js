@@ -7,8 +7,7 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_SECRET,
   process.env.GOOGLE_REDIRECT
 );
-
-// Function to get OAuth2 client with user-specific tokens
+ 
 async function getOAuth2Client(userId) {
   const user = await userModel.findById(userId);
   if (user && user.youtubeTokens) {
@@ -17,7 +16,6 @@ async function getOAuth2Client(userId) {
       refresh_token: user.youtubeTokens.refreshToken,
     });
   } else if (process.env.YOUTUBE_REFRESH_TOKEN) {
-    // Fallback to environment variable for backward compatibility
     oauth2Client.setCredentials({
       refresh_token: process.env.YOUTUBE_REFRESH_TOKEN,
     });

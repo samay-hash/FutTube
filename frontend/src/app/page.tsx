@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import { SiteHeader } from "@/components/site-header";
 import { BlurReveal } from "@/components/BlurReveal";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, BarChart2, Layers, Zap, CheckCircle2, Shield, Download, MessageCircle, Youtube, Users, GitBranch, Lock } from "lucide-react";
+import { ArrowRight, Shield, Download, MessageCircle, Youtube, Lock, GitBranch, Layers } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { WorkflowAnimation } from "@/components/workflow-animation";
 import { ScrollDoorSection } from "@/components/scroll-door-section";
-import { ParticleButton } from "@/components/particle-button";
+import { PricingSection } from "@/components/pricing-section";
+import { SmoothButton } from "@/components/smooth-button";
 
 export default function LandingPage() {
   const router = useRouter();
   const { scrollY } = useScroll();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const backgroundY = useTransform(scrollY, [0, 1000], [0, 300]);
 
   return (
@@ -81,37 +83,37 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1 }}
-              className="flex flex-col sm:flex-row gap-8 mt-12 w-full sm:w-auto items-center justify-start"
+              className="flex flex-col sm:flex-row gap-6 mt-12 w-full sm:w-auto items-center justify-start"
             >
-              {/* Primary: Start Free Trial - Text with Particle Burst */}
-              <ParticleButton
+              {/* Primary: Start Free Trial */}
+              <SmoothButton
+                variant="primary"
                 onClick={() => {
-                  setTimeout(() => router.push('/auth/signup'), 400); // Slight delay for effect
+                  setTimeout(() => router.push('/auth/signup'), 400);
                 }}
-                className="text-lg font-semibold text-foreground hover:text-primary transition-colors flex items-center gap-2 group tracking-tight"
               >
                 Start Free Trial
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </ParticleButton>
+                <ArrowRight className="w-5 h-5" />
+              </SmoothButton>
 
-              {/* Secondary: See The Workflow - Muted Text with Particle Burst */}
-              <ParticleButton
+              {/* Secondary: See The Workflow */}
+              <SmoothButton
+                variant="secondary"
                 onClick={() => {
                   const element = document.getElementById('workflow');
                   if (element) element.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors tracking-tight"
               >
                 See The Workflow
-              </ParticleButton>
+              </SmoothButton>
             </motion.div>
           </div>
 
-          {/* Removed Right Visual Image as per request "remove that image on right side of 1st page" */}
+          {/* Removed Right Visual Image as per previous request */}
         </div>
       </section>
 
-      {/* Scroll Door Section (Transition to Workflow) - Restored as per "earlier ui" request */}
+      {/* Scroll Door Section (Transition to Workflow) */}
       <ScrollDoorSection>
         <BlurReveal text="The Invisible" className="text-4xl md:text-6xl font-serif font-bold mb-2" />
         <BlurReveal text="Approval Layer" className="text-4xl md:text-6xl font-serif font-bold text-primary mb-6" delay={0.2} />
@@ -180,16 +182,19 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <PricingSection />
+
       {/* Footer */}
-      <footer className="py-20 border-t border-border mt-20 relative bg-[#050505] overflow-hidden">
+      <footer className="py-20 border-t border-border mt-0 relative bg-[#050505] overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent animate-shimmer" />
 
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
-          <div className="text-xl font-serif font-bold flex items-center gap-2 text-white">
-            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
-              <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[8px] border-l-white border-b-[4px] border-b-transparent ml-0.5" />
+          <div className="flex items-center gap-2">
+            <div className="relative w-8 h-8 flex items-center justify-center bg-gradient-to-br from-primary to-blue-600 rounded-lg shadow-lg shadow-primary/25">
+              <Layers className="w-5 h-5 text-white" strokeWidth={2.5} />
             </div>
-            <span className="tracking-tight">FutTube.</span>
+            <span className="text-xl font-serif font-bold tracking-tight text-white">MWareX.</span>
           </div>
 
           <div className="flex items-center gap-8">
@@ -200,7 +205,7 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="text-sm text-gray-500">© 2026 FutTube Inc. All locked down.</div>
+          <div className="text-sm text-gray-500">© 2026 MWareX Inc. All locked down.</div>
         </div>
       </footer>
     </div>

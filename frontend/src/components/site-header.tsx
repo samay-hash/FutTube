@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { FutTubeLogo } from "@/components/futtube-logo";
+import { MWareXLogo } from "@/components/mwarex-logo";
 
 export function SiteHeader() {
     return (
@@ -17,13 +17,7 @@ export function SiteHeader() {
 
             <div className="w-full max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
                 <Link href="/" className="z-10 hover:scale-105 transition-transform duration-300">
-                    {/* Using the standard Red/Black Logo from the earlier UI */}
-                    <div className="text-2xl font-serif font-bold tracking-tight text-foreground flex items-center gap-2">
-                        <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center shadow-lg shadow-red-600/20">
-                            <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[8px] border-l-white border-b-[4px] border-b-transparent ml-0.5" />
-                        </div>
-                        FutTube.
-                    </div>
+                    <MWareXLogo />
                 </Link>
 
                 <nav className="hidden md:flex items-center gap-8 bg-background/50 backdrop-blur-md px-8 py-3 rounded-full border border-border/40 shadow-sm">

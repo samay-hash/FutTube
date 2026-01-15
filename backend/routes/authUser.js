@@ -53,7 +53,6 @@ router.post("/signin", async (req, res) => {
     process.env.JWT_SECRET_USER
   );
 
-  // Set httpOnly cookie for improved security (also return token for compatibility)
   res.cookie("auth", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

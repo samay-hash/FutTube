@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   creatorId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: false, // Only for editors
+    required: false, 
   },
   role: {
     type: String,

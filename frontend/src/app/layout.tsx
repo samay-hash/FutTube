@@ -14,7 +14,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "FutTube | Streamline Your Video Workflow",
+  title: "MWareX | Streamline Your Video Workflow",
   description: "The ultimate platform for YouTubers and editors to collaborate seamlessly. Upload, review, approve, and publish videos with ease.",
 };
 
