@@ -11,7 +11,7 @@ router.post("/signup", async (req, res) => {
 
   const hashed = await bcrypt.hash(password, 10);
 
-  // Find the invite to get creatorId
+ 
   const invite = await EditorAssignment.findOne({
     editorEmail: email,
     status: "invited"

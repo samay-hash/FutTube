@@ -31,7 +31,7 @@ router.post("/upload", upload.single("video"), async (req, res) => {
 });
 
 router.get("/pending", userAuth, async (req, res) => {
-  let filter = { status: "pending" };
+  let filter = { status: "pending"};
   if (req.role === "creator") {
     filter.creatorId = req.userId;
   } else if (req.role === "editor") {

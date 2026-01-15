@@ -15,13 +15,22 @@ const googleAuthRoutes = require("./routes/googleAuth");
 
 const app = express();
 
-// Clean up the frontend URL (remove trailing slash if present)
 const frontend = (process.env.FRONTEND_URL || "http://localhost:3000").replace(/\/$/, "");
 console.log("CORS Origin Allowed:", frontend);
 
+const allowedOrigins = [
+  frontend,
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+];
+
+console.log("Allowed Origins:", allowedOrigins);
+
 app.use(
   cors({
-    origin: [frontend, "http://localhost:3000"], // Allow both production and local
+    origin: allowedOrigins,
     credentials: true,
   })
 );
@@ -55,6 +64,7 @@ app.get("/oauth2callback", async (req, res) => {
     // Redirect to frontend callback with tokens (frontend should handle storing securely)
     const frontend = process.env.FRONTEND_URL ?? "http://localhost:3000";
     const params = new URLSearchParams();
+    
     if (tokens.access_token) params.append("access_token", tokens.access_token);
     if (tokens.refresh_token)
       params.append("refresh_token", tokens.refresh_token);
@@ -72,5 +82,5 @@ app.get("/oauth2callback", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

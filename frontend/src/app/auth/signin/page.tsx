@@ -5,19 +5,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  Eye,
-  EyeOff,
-  Play,
-  Mail,
-  Lock,
   ArrowRight,
   Loader2,
-  Check,
-  ShieldCheck,
-  Zap,
+  Eye,
+  EyeOff,
+  Briefcase,
+  PenTool,
+  ShieldAlert,
 } from "lucide-react";
 import { authAPI, getGoogleAuthUrl } from "@/lib/api";
 import { setToken, setUserRole, setUserData } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -63,208 +61,165 @@ export default function SignInPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <main className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-background text-foreground selection:bg-primary/20">
 
-      {/* Centered Floating Card Layout */}
+      {/* Global Grid Pattern (matching landing page) */}
+      <div className="absolute inset-0 z-0 opacity-[0.05] pointer-events-none"
+        style={{
+          backgroundImage: `
+                 linear-gradient(to right, #808080 1px, transparent 1px),
+                 linear-gradient(to bottom, #808080 1px, transparent 1px)
+               `,
+          backgroundSize: '40px 40px',
+          maskImage: 'radial-gradient(circle at center, black 0%, transparent 80%)'
+        }}
+      />
+
+      {/* Slick "3D" Entrance Animation */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} // Smooth Apple-ease
-        className="w-full max-w-5xl glass-card rounded-[2rem] overflow-hidden flex flex-col md:flex-row shadow-2xl relative z-10 min-h-[600px]"
+        initial={{ opacity: 0, rotateX: 20, y: 100 }}
+        animate={{ opacity: 1, rotateX: 0, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        style={{ perspective: 1000 }}
+        className="w-full max-w-lg z-10"
       >
+        <div
+          className="glass-card border border-white/10 rounded-3xl overflow-hidden shadow-2xl relative p-8 md:p-12 bg-white/5 dark:bg-black/40 backdrop-blur-2xl"
+        >
+          {/* Top "Hinge" or Highlight effect */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
-        {/* Left Side: Interactive Visual / Marketing */}
-        <div className="hidden md:flex flex-1 relative bg-gradient-to-br from-[#0a0a0a] to-[#111] border-r border-white/5 p-12 flex-col justify-between overflow-hidden group">
-
-          {/* Animated Background Mesh (Local) */}
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,0,0,0.1),transparent_70%)] animate-pulse" />
-          </div>
-
-          {/* Logo Brand */}
-          <div className="relative z-10">
-            <Link href="/" className="flex items-center gap-3 w-fit group-hover:scale-105 transition-transform duration-500">
-              <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-900/40">
-                <Play className="w-5 h-5 text-white fill-white ml-0.5" />
+          <div className="text-center mb-10">
+            <Link href="/" className="inline-flex items-center gap-2 mb-4 group">
+              <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[8px] border-l-white border-b-[4px] border-b-transparent ml-0.5" />
               </div>
-              <span className="text-xl font-bold tracking-tight text-white">Fut<span className="text-red-500">Tube</span></span>
+              <span className="text-2xl font-serif font-bold">FutTube.</span>
             </Link>
+            <h1 className="text-3xl font-medium mb-2 tracking-tight">Welcome back</h1>
+            <p className="text-muted-foreground text-sm">Sign in to orchestrate your workflow.</p>
           </div>
 
-          {/* 3D Visual Concept */}
-          <div className="relative z-10 flex-1 flex items-center justify-center py-10">
-            <div className="relative w-64 h-80 perspective-1000">
-              {/* Floating Card 1 */}
-              <motion.div
-                animate={{ y: [0, -10, 0], rotate: [0, 2, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-0 left-0 w-full bg-[#1a1a1a] rounded-2xl border border-white/10 p-4 shadow-2xl z-20"
-              >
-                <div className="w-full h-32 bg-gradient-to-br from-red-900/20 to-black rounded-lg mb-4 flex items-center justify-center">
-                  <Play className="w-8 h-8 text-red-500 opacity-50" />
-                </div>
-                <div className="space-y-2">
-                  <div className="h-2 w-2/3 bg-white/10 rounded" />
-                  <div className="h-2 w-1/2 bg-white/10 rounded" />
-                </div>
-                <div className="mt-4 flex gap-2">
-                  <div className="px-2 py-1 rounded bg-green-500/20 text-green-500 text-xs font-bold border border-green-500/20">APPROVED</div>
-                </div>
-              </motion.div>
-
-              {/* Floating Card 2 (Background) */}
-              <motion.div
-                animate={{ y: [0, 15, 0], rotate: [0, -3, 0], scale: [0.9, 0.95, 0.9] }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute top-10 -right-8 w-full bg-[#151515] rounded-2xl border border-white/5 p-4 shadow-xl z-10 opacity-60 blur-[1px]"
-              >
-                <div className="w-full h-32 bg-white/5 rounded-lg mb-4" />
-                <div className="h-2 w-3/4 bg-white/5 rounded" />
-              </motion.div>
-            </div>
-          </div>
-
-          {/* Quote / Social Proof */}
-          <div className="relative z-10 space-y-4">
-            <div className="flex gap-1">
-              {[1, 2, 3, 4, 5].map(i => <div key={i} className="w-1 h-1 rounded-full bg-red-500" />)}
-            </div>
-            <p className="text-xl font-medium text-white leading-relaxed">
-              &quot;The most streamlined workflow for professional content teams.&quot;
-            </p>
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-gray-500" />
-              <span className="text-sm text-gray-400">Trusted by 500+ Top Creators</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Side: Form */}
-        <div className="flex-1 p-8 md:p-12 flex flex-col justify-center bg-black/40 backdrop-blur-xl">
-
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
-            <p className="text-gray-400">Enter your credentials to access your dashboard.</p>
-          </div>
-
-          {/* Custom Tab Switcher */}
-          <div className="p-1 bg-white/5 rounded-xl flex mb-8 relative">
+          {/* Role Switcher */}
+          <div className="mb-8 p-1 bg-secondary/30 rounded-xl flex relative overflow-hidden">
             <motion.div
-              className="absolute top-1 bottom-1 bg-yellow-500 rounded-lg shadow-sm z-0"
-              layoutId="activeTab"
+              className="absolute inset-y-1 bg-card shadow-sm rounded-lg"
+              layoutId="roleTab"
               initial={false}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
               style={{
-                width: '33.33%',
-                left: userType === 'creator' ? '4px' : userType === 'editor' ? '33.33%' : 'calc(66.66% - 4px)'
+                width: '32%',
+                left: userType === 'creator' ? '1%' : userType === 'editor' ? '34%' : '67%'
               }}
             />
             {(['creator', 'editor', 'admin'] as const).map((type) => (
               <button
                 key={type}
                 onClick={() => setUserType(type)}
-                className={`flex-1 relative z-10 py-2.5 text-sm font-bold transition-colors capitalize ${userType === type ? 'text-black' : 'text-gray-400 hover:text-gray-200'
-                  }`}
+                className={cn(
+                  "flex-1 relative z-10 py-2.5 text-sm font-medium transition-colors duration-200 capitalize flex items-center justify-center gap-2",
+                  userType === type ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                )}
               >
-                {type}
+                {type === 'creator' && <Briefcase className="w-4 h-4" />}
+                {type === 'editor' && <PenTool className="w-4 h-4" />}
+                {type === 'admin' && <ShieldAlert className="w-4 h-4" />}
+                <span className="hidden sm:inline">{type}</span>
               </button>
             ))}
           </div>
 
-          {/* Error Alert */}
-          <AnimatePresence>
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, height: 0, marginBottom: 0 }}
-                animate={{ opacity: 1, height: 'auto', marginBottom: 24 }}
-                exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                className="bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-3 rounded-xl text-sm flex items-center gap-2 overflow-hidden"
-              >
-                <Zap className="w-4 h-4 shrink-0" />
-                {error}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, height: 'auto', scale: 1 }}
+                  exit={{ opacity: 0, height: 0, scale: 0.9 }}
+                  className="bg-red-500/10 text-red-500 text-sm px-4 py-3 rounded-lg flex items-center gap-2 border border-red-500/20"
+                >
+                  <ShieldAlert className="w-4 h-4" />
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Email</label>
+            <div className="space-y-4">
+              {/* Email Input */}
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-red-500 transition-colors" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="input-field pl-12 bg-white/5 border-white/10 focus:bg-white/10 transition-all hover:border-white/20"
-                  placeholder="name@work.com"
+                  placeholder=" "
+                  id="email"
+                  className="peer w-full bg-secondary/20 border border-white/5 focus:border-primary/50 rounded-xl px-4 pt-6 pb-2 outline-none transition-all placeholder-shown:pt-4 focus:bg-background/50"
                   required
                 />
+                <label
+                  htmlFor="email"
+                  className="absolute left-4 top-2 text-xs text-muted-foreground font-medium transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs"
+                >
+                  Email address
+                </label>
               </div>
-            </div>
 
-            <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Password</label>
+              {/* Password Input */}
               <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-red-500 transition-colors" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input-field pl-12 pr-12 bg-white/5 border-white/10 focus:bg-white/10 transition-all hover:border-white/20"
-                  placeholder="••••••••"
+                  placeholder=" "
+                  id="password"
+                  className="peer w-full bg-secondary/20 border border-white/5 focus:border-primary/50 rounded-xl px-4 pt-6 pb-2 outline-none transition-all placeholder-shown:pt-4 focus:bg-background/50"
                   required
                 />
+                <label
+                  htmlFor="password"
+                  className="absolute left-4 top-2 text-xs text-muted-foreground font-medium transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs"
+                >
+                  Password
+                </label>
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-sm pt-2">
-              <label className="flex items-center gap-2 text-gray-400 cursor-pointer hover:text-gray-300 transition-colors">
-                <input type="checkbox" className="w-4 h-4 rounded border-gray-600 bg-white/5 accent-red-500" />
-                <span>Remember me</span>
-              </label>
-              <Link href="/auth/forgot-password" className="text-red-400 hover:text-red-300 font-medium transition-colors">
-                Forgot password?
-              </Link>
-            </div>
-
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full btn-primary h-12 text-base shadow-lg shadow-red-900/20 group relative overflow-hidden"
+              className="w-full py-4 rounded-xl bg-primary text-white font-medium hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.98] relative overflow-hidden group"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-              {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin mx-auto" />
-              ) : (
-                <span className="flex items-center justify-center gap-2">
-                  Sign In <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </span>
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
+                <>
+                  <span className="relative z-10">Sign In</span>
+                  <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
+                </>
               )}
             </button>
           </form>
 
-          <div className="mt-8 pt-8 border-t border-white/5 text-center">
-            <p className="text-gray-500 text-sm mb-4">Or continue with</p>
+          <div className="mt-8 pt-6 border-t border-white/5 text-center space-y-4">
             <button
               onClick={() => window.location.href = getGoogleAuthUrl()}
-              className="w-full btn-secondary h-12 flex items-center justify-center gap-3 hover:bg-white/10 text-white/90"
+              className="w-full py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center gap-3 font-medium text-sm text-foreground"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" /><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" /><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" /><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" /></svg>
-              Google ID
+              Continue with Google
             </button>
-            <p className="mt-6 text-sm text-gray-500">
-              Don&apos;t have an account? <Link href="/auth/signup" className="text-white hover:text-red-400 font-medium transition-colors">Create one now</Link>
+
+            <p className="text-sm text-muted-foreground">
+              Don't have an account? <Link href="/auth/signup" className="text-foreground font-medium hover:text-primary transition-colors">Create account</Link>
             </p>
           </div>
         </div>
-
       </motion.div>
     </main>
   );
